@@ -1,8 +1,8 @@
-#include "Window.hpp"
+#include <gremlin/platform/Window.hpp>
 
 #include <SDL3/SDL.h>
 
-namespace engine
+namespace gremlin
 {
 	Window::~Window(void)
 	{

@@ -1,8 +1,8 @@
-#include "Input.hpp"
+#include <gremlin/platform/Input.hpp>
 
 #include <SDL3/SDL.h>
 
-namespace engine
+namespace gremlin
 {
 	void Input::HandleEvent(const SDL_Event& event)
 	{

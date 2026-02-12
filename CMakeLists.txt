@@ -4,18 +4,40 @@ project(grid-tactics LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+find_package(SDL3 REQUIRED)
 
-add_subdirectory(external/SDL)
+# --------------
+# Gremlin Engine
+# --------------
 
-file(GLOB_RECURSE ENGINE_SOURCES src/engine/*.cpp)
+add_library(gremlin STATIC
+	src/gremlin/core/Application.cpp
+	src/gremlin/core/ProcessManager.cpp
+	src/gremlin/render/Renderer.cpp
+	src/gremlin/platform/Window.cpp
+	src/gremlin/platform/Input.cpp
+)
 
-add_library(engine STATIC ${ENGINE_SOURCES})
+target_include_directories(gremlin
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-target_include_directories(engine PUBLIC src)
+target_link_libraries(gremlin
+	PUBLIC SDL3::SDL3
+)
 
-add_executable(grid_tactics src/main.cpp)
+# -------------------
+# Grid Tactics (game)
+# -------------------
 
-target_link_libraries(grid_tactics PRIVATE engine SDL3::SDL3)
+add_executable(grid_tactics
+	src/game/main.cpp
+	src/game/Game.cpp
+)
+
+target_link_libraries(grid_tactics
+	PRIVATE gremlin
+)
 
 set_target_properties(grid_tactics PROPERTIES OUTPUT_NAME "grid-tactics")
