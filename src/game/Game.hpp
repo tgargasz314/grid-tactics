@@ -1,6 +1,6 @@
 #pragma once
 
-#include <gremlin/core/IGame.hpp>
+#include <gremlin/Gremlin.hpp>
 
 namespace gremlin
 {
