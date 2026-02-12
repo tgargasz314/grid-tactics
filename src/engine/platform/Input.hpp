@@ -1,8 +1,7 @@
 #pragma once
 
+#include <SDL3/SDL_events.h>
 #include <unordered_set>
-
-struct SDL_Event;
 
 namespace engine
 {

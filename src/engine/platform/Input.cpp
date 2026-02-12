@@ -8,11 +8,11 @@ namespace engine
 	{
 		if (event.type == SDL_EVENT_KEY_DOWN)
 		{
-			keysDown.insert(event.key.keysym.scancode);
+			keysDown.insert(event.key.scancode);
 		}
 		else if (event.type == SDL_EVENT_KEY_UP)
 		{
-			keysDown.erase(event.key.keysym.scancode);
+			keysDown.erase(event.key.scancode);
 		}
 	}
 

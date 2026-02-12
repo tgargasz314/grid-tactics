@@ -13,7 +13,7 @@ namespace engine
 
 	bool Application::Initialize(void)
 	{
-		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		{
 			return false;
 		}

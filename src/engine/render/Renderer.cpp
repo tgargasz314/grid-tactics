@@ -17,11 +17,17 @@ namespace engine
 	{
 		renderer = SDL_CreateRenderer(
 			window->GetNativeHandle(),
-			nullptr,
-			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+			nullptr
 		);
 
-		return renderer != nullptr;
+		if (!renderer)
+		{
+			return false;
+		}
+
+		SDL_SetRenderVSync(renderer, 1);
+
+		return true;
 	}
 
 	void Renderer::Clear(void)
@@ -37,7 +43,13 @@ namespace engine
 
 	void Renderer::DrawRect(int x, int y, int w, int h)
 	{
-		SDL_FRect rect { x, y, w, h };
+		SDL_FRect rect {
+		static_cast<float>(x),
+		static_cast<float>(y),
+		static_cast<float>(w),
+		static_cast<float>(h)
+	};
+
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderFillRect(renderer, &rect);

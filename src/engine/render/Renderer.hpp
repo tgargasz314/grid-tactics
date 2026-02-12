@@ -20,6 +20,6 @@ namespace engine
 		void DrawRect(int x, int y, int w, int height);
 
 	private:
-		SDL_Renderer renderer = nullptr;
+		SDL_Renderer* renderer = nullptr;
 	};
 }
