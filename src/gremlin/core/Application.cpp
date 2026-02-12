@@ -20,7 +20,7 @@ namespace gremlin
 
 	void Application::InitializeSDL(void)
 	{
-		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		if (!SDL_Init(SDL_INIT_VIDEO))
 		{
 			std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
 			return;
