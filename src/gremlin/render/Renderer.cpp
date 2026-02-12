@@ -1,34 +1,9 @@
 #include <gremlin/render/Renderer.hpp>
-#include <gremlin/platform/Window.hpp>
-
 #include <SDL3/SDL.h>
 
 namespace gremlin
 {
-	Renderer::~Renderer(void)
-	{
-		if (renderer)
-		{
-			SDL_DestroyRenderer(renderer);
-		}
-	}
-
-	bool Renderer::Initialize(Window* window)
-	{
-		renderer = SDL_CreateRenderer(
-			window->GetNativeHandle(),
-			nullptr
-		);
-
-		if (!renderer)
-		{
-			return false;
-		}
-
-		SDL_SetRenderVSync(renderer, 1);
-
-		return true;
-	}
+	Renderer::Renderer(SDL_Renderer* renderer) : renderer(renderer) {}
 
 	void Renderer::Clear(void)
 	{
@@ -41,8 +16,13 @@ namespace gremlin
 		SDL_RenderPresent(renderer);
 	}
 
-	void Renderer::DrawRect(int x, int y, int w, int h)
+	void Renderer::DrawFilledRect(int x, int y, int w, int h)
 	{
+		if (!renderer)
+		{
+			return;
+		}
+
 		SDL_FRect rect {
 		static_cast<float>(x),
 		static_cast<float>(y),

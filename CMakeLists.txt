@@ -23,7 +23,7 @@ target_include_directories(gremlin
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_include_directories(gremlin
+target_link_libraries(gremlin
 	PUBLIC SDL3::SDL3
 )
 
