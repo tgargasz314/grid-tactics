@@ -9,9 +9,9 @@ namespace gremlin
 	public:
 		virtual ~IGame() = default;
 
-		virtual void Initialize(Renderer* renderer) = 0;
+		virtual void Initialize(void) {}
 		virtual void Update(float deltaTime) = 0;
-		virtual void Render() = 0;
-		virtual void Shutdown() = 0;
+		virtual void Render(Renderer& renderer) = 0;
+		virtual void Shutdown(void) {}
 	};
 }

@@ -1,6 +1,8 @@
 #include <gremlin/render/Renderer.hpp>
 #include <SDL3/SDL.h>
 
+#include <iostream>
+
 namespace gremlin
 {
 	Renderer::Renderer(SDL_Renderer* renderer) : renderer(renderer) {}
@@ -20,6 +22,7 @@ namespace gremlin
 	{
 		if (!renderer)
 		{
+			std::cerr << "Renderer is null, cannot draw filled rectangle." << std::endl;
 			return;
 		}
 

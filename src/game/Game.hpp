@@ -10,11 +10,6 @@ namespace gremlin
 class Game : public gremlin::IGame
 {
 public:
-	void Initialize(gremlin::Renderer* renderer) override;
 	void Update(float deltaTime) override;
-	void Render() override;
-	void Shutdown() override;
-
-private:
-	gremlin::Renderer* renderer = nullptr;
+	void Render(gremlin::Renderer& renderer) override;
 };

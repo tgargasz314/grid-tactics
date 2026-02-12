@@ -4,6 +4,8 @@
 
 #include <SDL3/SDL.h>
 
+#include <iostream>
+
 namespace gremlin
 {
 	Application::Application(std::unique_ptr<IGame> game) : game(std::move(game))
@@ -18,10 +20,26 @@ namespace gremlin
 
 	void Application::InitializeSDL(void)
 	{
-		SDL_Init(SDL_INIT_VIDEO);
+		if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		{
+			std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
+			return;
+		}
 
 		window = SDL_CreateWindow("Gremlin Engine", 800, 600, 0);
+		if (!window)
+		{
+			std::cerr << "Failed to create SDL window: " << SDL_GetError() << std::endl;
+			return;
+		}
+
 		sdlRenderer = SDL_CreateRenderer(window, nullptr);
+		if (!sdlRenderer)
+		{
+			std::cerr << "Failed to create SDL renderer: " << SDL_GetError() << std::endl;
+			return;
+		}
+
 		renderer = std::make_unique<Renderer>(sdlRenderer);
 	}
 
@@ -35,7 +53,7 @@ namespace gremlin
 
 	void Application::Run(void)
 	{
-		game->Initialize(renderer.get());
+		game->Initialize();
 
 		while (running)
 		{
@@ -53,7 +71,7 @@ namespace gremlin
 			float deltaTime = 0.016f;
 
 			game->Update(deltaTime);
-			game->Render();
+			game->Render(*renderer);
 
 			renderer->Present();
 		}
