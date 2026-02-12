@@ -1,5 +1,5 @@
-#include "ProcessManager.hpp"
-#include "Process.hpp"
+#include <gremlin/core/ProcessManager.hpp>
+#include <gremlin/core/Process.hpp>
 
 void ProcessManager::update(float dt)
 {

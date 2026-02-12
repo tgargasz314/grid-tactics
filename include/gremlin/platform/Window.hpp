@@ -2,7 +2,7 @@
 
 struct SDL_Window;
 
-namespace engine
+namespace gremlin
 {
 	class Window
 	{

@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace engine
+namespace gremlin
 {
 	class Window;
 	class Renderer;

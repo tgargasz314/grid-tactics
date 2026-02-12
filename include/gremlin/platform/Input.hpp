@@ -3,7 +3,7 @@
 #include <SDL3/SDL_events.h>
 #include <unordered_set>
 
-namespace engine
+namespace gremlin
 {
 	class Input
 	{

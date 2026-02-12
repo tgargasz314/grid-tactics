@@ -1,12 +1,11 @@
-#include "Application.hpp"
-
-#include "../platform/Window.hpp"
-#include "../platform/Input.hpp"
-#include "../render/Renderer.hpp"
+#include <gremlin/core/Application.hpp>
+#include <gremlin/platform/Window.hpp>
+#include <gremlin/platform/Input.hpp>
+#include <gremlin/render/Renderer.hpp>
 
 #include <SDL3/SDL.h>
 
-namespace engine
+namespace gremlin
 {
 	Application::Application(void) = default;
 	Application::~Application(void) = default;

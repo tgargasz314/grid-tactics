@@ -1,9 +1,9 @@
-#include "Renderer.hpp"
-#include "../platform/Window.hpp"
+#include <gremlin/render/Renderer.hpp>
+#include <gremlin/platform/Window.hpp>
 
 #include <SDL3/SDL.h>
 
-namespace engine
+namespace gremlin
 {
 	Renderer::~Renderer(void)
 	{
