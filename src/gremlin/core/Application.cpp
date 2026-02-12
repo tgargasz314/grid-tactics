@@ -1,91 +1,22 @@
 #include <gremlin/core/Application.hpp>
-#include <gremlin/platform/Window.hpp>
-#include <gremlin/platform/Input.hpp>
-#include <gremlin/render/Renderer.hpp>
-
-#include <SDL3/SDL.h>
+#include <gremlin/core/IGame.hpp>
 
 namespace gremlin
 {
-	Application::Application(void) = default;
+	Application::Application(std::unique_ptr<IGame> game) : game(std::move(game)) {}
+
 	Application::~Application(void) = default;
-
-	bool Application::Initialize(void)
-	{
-		if (SDL_Init(SDL_INIT_VIDEO) < 0)
-		{
-			return false;
-		}
-
-		window = std::make_unique<Window>();
-		if (!window->Initialize("Grid Tactics", 1200, 720))
-		{
-			return false;
-		}
-
-		renderer = std::make_unique<Renderer>();
-		if (!renderer->Initialize(window.get()))
-		{
-			return false;
-		}
-
-		input = std::make_unique<Input>();
-
-		return true;
-	}
 
 	void Application::Run(void)
 	{
-		running = true;
-		Uint64 previous = SDL_GetTicks();
+		game->Initialize();
 
 		while (running)
 		{
-			Uint64 current = SDL_GetTicks();
-			float deltaTime = (current - previous) / 1000.0f;
-			previous = current;
+			float deltaTime = 0.016f;
 
-			ProcessEvents();
-			Update(deltaTime);
-			Render();
+			game->Update(deltaTime);
+			game->Render();
 		}
-	}
-
-	void Application::Shutdown(void)
-	{
-		renderer.reset();
-		window.reset();
-		SDL_Quit();
-	}
-
-	void Application::ProcessEvents(void)
-	{
-		SDL_Event event;
-
-		while(SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_EVENT_QUIT)
-			{
-				running = false;
-			}
-
-			input->HandleEvent(event);
-		}
-	}
-
-	void Application::Update(float deltaTime)
-	{
-		(void)deltaTime;
-		input->Update();
-	}
-
-	void Application::Render(void)
-	{
-		renderer->Clear();
-
-		// Temporary Test Draw
-		renderer->DrawRect(100, 100, 64, 64);
-
-		renderer->Present();
 	}
 }

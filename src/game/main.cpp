@@ -1,16 +1,12 @@
-#include "engine/core/Application.hpp"
+#include <memory>
+#include <gremlin/Gremlin.hpp>
+#include "Game.hpp"
 
-int main(int argc, char** argv)
+int main()
 {
-	engine::Application app;
-
-	if (!app.Initialize())
-	{
-		return 1;
-	}
-
+	auto game = std::make_unique<Game>();
+	gremlin::Application app(std::move(game));
 	app.Run();
-	app.Shutdown();
 
 	return 0;
 }
