@@ -1,3 +1,4 @@
+#include <gremlin/platform/Window.hpp>
 #include <gremlin/render/Renderer.hpp>
 #include <SDL3/SDL.h>
 
@@ -5,22 +6,46 @@
 
 namespace gremlin
 {
-	Renderer::Renderer(SDL_Renderer* renderer) : renderer(renderer) {}
+	Renderer::~Renderer(void)
+	{
+		Destroy();
+	}
+
+	bool Renderer::Create(Window& window)
+	{
+		sdlRenderer = SDL_CreateRenderer(window.GetHandle(), nullptr);
+		if (!sdlRenderer)
+		{
+			std::cerr << "Failed to create SDL renderer: " << SDL_GetError() << std::endl;
+			return false;
+		}
+
+		return true;
+	}
+
+	void Renderer::Destroy(void)
+	{
+		if (sdlRenderer)
+		{
+			SDL_DestroyRenderer(sdlRenderer);
+			sdlRenderer = nullptr;
+		}
+	}
 
 	void Renderer::Clear(void)
 	{
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
+		SDL_RenderClear(sdlRenderer);
 	}
 
 	void Renderer::Present(void)
 	{
-		SDL_RenderPresent(renderer);
+		SDL_RenderPresent(sdlRenderer);
 	}
 
 	void Renderer::DrawFilledRect(int x, int y, int w, int h)
 	{
-		if (!renderer)
+		if (!sdlRenderer)
 		{
 			std::cerr << "Renderer is null, cannot draw filled rectangle." << std::endl;
 			return;
@@ -34,7 +59,7 @@ namespace gremlin
 	};
 
 
-		SDL_SetRenderDrawColor(renderer, 255, 110, 255, 255);
-		SDL_RenderFillRect(renderer, &rect);
+		SDL_SetRenderDrawColor(sdlRenderer, 255, 110, 255, 255);
+		SDL_RenderFillRect(sdlRenderer, &rect);
 	}
 }

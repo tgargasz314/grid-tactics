@@ -1,6 +1,7 @@
 #include <gremlin/core/Application.hpp>
 #include <gremlin/core/IGame.hpp>
 #include <gremlin/platform/Input.hpp>
+#include <gremlin/platform/Window.hpp>
 #include <gremlin/render/Renderer.hpp>
 
 #include <SDL3/SDL.h>
@@ -11,44 +12,34 @@ namespace gremlin
 {
 	Application::Application(std::unique_ptr<IGame> game) : game(std::move(game))
 	{
-		InitializeSDL();
-	}
-
-	Application::~Application(void)
-	{
-		ShutdownSDL();
-	}
-
-	void Application::InitializeSDL(void)
-	{
 		if (!SDL_Init(SDL_INIT_VIDEO))
 		{
 			std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
 			return;
 		}
 
-		window = SDL_CreateWindow("Gremlin Engine", 800, 600, SDL_WINDOW_RESIZABLE);
-		if (!window)
+		window = std::make_unique<Window>();
+		if (!window->Create("Gremlin Engine", 800, 600))
 		{
-			std::cerr << "Failed to create SDL window: " << SDL_GetError() << std::endl;
 			return;
 		}
 
-		sdlRenderer = SDL_CreateRenderer(window, nullptr);
-		if (!sdlRenderer)
+		renderer = std::make_unique<Renderer>();
+		if (!renderer->Create(*window))
 		{
-			std::cerr << "Failed to create SDL renderer: " << SDL_GetError() << std::endl;
 			return;
 		}
-
-		renderer = std::make_unique<Renderer>(sdlRenderer);
 	}
 
-	void Application::ShutdownSDL(void)
+	Application::~Application(void)
 	{
+		Shutdown();
+	}
+
+	void Application::Shutdown(void)
+	{
+		window.reset();
 		renderer.reset();
-		SDL_DestroyRenderer(sdlRenderer);
-		SDL_DestroyWindow(window);
 		SDL_Quit();
 	}
 

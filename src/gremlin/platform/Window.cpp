@@ -1,31 +1,43 @@
 #include <gremlin/platform/Window.hpp>
-
 #include <SDL3/SDL.h>
+#include <iostream>
 
 namespace gremlin
 {
 	Window::~Window(void)
 	{
-		if (window)
-		{
-			SDL_DestroyWindow(window);
-		}
+		Destroy();
 	}
 
-	bool Window::Initialize(const char* title, int width, int height)
+	bool Window::Create(const char* title, int width, int height)
 	{
-		window = SDL_CreateWindow(
+		sdlWindow = SDL_CreateWindow(
 			title,
 			width,
 			height,
 			SDL_WINDOW_RESIZABLE
 		);
 
-		return window != nullptr;
+		if (!sdlWindow)
+		{
+			std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
+			return false;
+		}
+
+		return true;
 	}
 
-	SDL_Window* Window::GetNativeHandle(void) const
+	void Window::Destroy(void)
 	{
-		return window;
+		if (sdlWindow)
+		{
+			SDL_DestroyWindow(sdlWindow);
+			sdlWindow = nullptr;
+		}
+	}
+
+	SDL_Window* Window::GetHandle(void) const
+	{
+		return sdlWindow;
 	}
 }
