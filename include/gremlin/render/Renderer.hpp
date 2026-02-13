@@ -7,13 +7,17 @@ namespace gremlin
 	class Renderer
 	{
 	public:
-		Renderer(SDL_Renderer* renderer);
+		Renderer(void) = default;
+		~Renderer(void);
+
+		bool Create(Window& window);
+		void Destroy(void);
 
 		void Clear(void);
 		void Present(void);
 		void DrawFilledRect(int x, int y, int w, int height);
 
 	private:
-		SDL_Renderer* renderer;
+		SDL_Renderer* sdlRenderer;
 	};
 }

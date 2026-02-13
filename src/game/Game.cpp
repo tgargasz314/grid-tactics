@@ -6,6 +6,11 @@ void Game::Update(float deltaTime)
 	// nothing yet
 }
 
+void Game::FixedUpdate(float fixedTimeStep)
+{
+	// nothing yet
+}
+
 void Game::Render(gremlin::Renderer& renderer)
 {
 	renderer.DrawFilledRect(300, 200, 200, 200);

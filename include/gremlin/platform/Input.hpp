@@ -8,12 +8,14 @@ namespace gremlin
 	class Input
 	{
 	public:
-		void HandleEvent(const SDL_Event& event);
-		void Update(void);
+		static void Initialize(void);
+		static void Shutdown(void);
 
-		bool IsKeyDown(int scancode) const;
+		static void ProcessEvent(const SDL_Event& event);
+
+		static bool IsKeyDown(SDL_Keycode key);
 
 	private:
-		std::unordered_set<int> keysDown;
+		static std::unordered_set<SDL_Keycode> keysDown;
 	};
 }

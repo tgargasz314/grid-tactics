@@ -10,11 +10,12 @@ namespace gremlin
 		Window(void) = default;
 		~Window(void);
 
-		bool Initialize(const char* title, int width, int height);
+		bool Create(const char* title, int width, int height);
+		void Destroy(void);
 
-		SDL_Window* GetNativeHandle(void) const;
+		SDL_Window* GetHandle(void) const;
 
 	private:
-		SDL_Window* window = nullptr;
+		SDL_Window* sdlWindow = nullptr;
 	};
 }

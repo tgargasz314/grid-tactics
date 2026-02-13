@@ -2,12 +2,10 @@
 
 #include <memory>
 
-struct SDL_Window;
-struct SDL_Renderer;
-
 namespace gremlin
 {
 	class IGame;
+	class Window;
 	class Renderer;
 
 	class Application
@@ -18,15 +16,15 @@ namespace gremlin
 
 		void Run(void);
 
+		void ProcessEvents(void);
+
 	private:
-		void InitializeSDL(void);
-		void ShutdownSDL(void);
+		bool Initialize(void);
+		void Shutdown(void);
 
 		std::unique_ptr<IGame> game;
+		std::unique_ptr<Window> window;
 		std::unique_ptr<Renderer> renderer;
-
-		SDL_Window* window = nullptr;
-		SDL_Renderer* sdlRenderer = nullptr;
 
 		bool running = true;
 	};
