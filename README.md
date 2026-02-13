@@ -60,7 +60,6 @@ sudo apt install build-essential cmake libsdl3-dev
 From the project root:
 
 ```bash
-git submodule update --init --recursive
 cmake -S . -B build
 cmake --build build
 ```
