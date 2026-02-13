@@ -19,6 +19,7 @@ namespace gremlin
 		void ProcessEvents(void);
 
 	private:
+		bool Initialize(void);
 		void Shutdown(void);
 
 		std::unique_ptr<IGame> game;

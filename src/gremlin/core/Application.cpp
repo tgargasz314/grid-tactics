@@ -12,28 +12,39 @@ namespace gremlin
 {
 	Application::Application(std::unique_ptr<IGame> game) : game(std::move(game))
 	{
-		if (!SDL_Init(SDL_INIT_VIDEO))
+		if (!Initialize())
 		{
-			std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-			return;
-		}
-
-		window = std::make_unique<Window>();
-		if (!window->Create("Gremlin Engine", 800, 600))
-		{
-			return;
-		}
-
-		renderer = std::make_unique<Renderer>();
-		if (!renderer->Create(*window))
-		{
-			return;
+			std::cerr << "Failed to initialize application." << std::endl;
+			running = false;
 		}
 	}
 
 	Application::~Application(void)
 	{
 		Shutdown();
+	}
+
+	bool Application::Initialize(void)
+	{
+		if (!SDL_Init(SDL_INIT_VIDEO))
+		{
+			std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
+			return false;
+		}
+
+		window = std::make_unique<Window>();
+		if (!window->Create("Gremlin Engine", 800, 600))
+		{
+			return false;
+		}
+
+		renderer = std::make_unique<Renderer>();
+		if (!renderer->Create(*window))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	void Application::Shutdown(void)
@@ -45,6 +56,12 @@ namespace gremlin
 
 	void Application::Run(void)
 	{
+		if (!game)
+		{
+			std::cerr << "No game instance provided." << std::endl;
+			return;
+		}
+
 		game->Initialize();
 
 		const double fixedTimeStep = 1.0 / 60.0;
