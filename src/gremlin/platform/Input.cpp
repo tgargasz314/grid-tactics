@@ -1,28 +1,33 @@
 #include <gremlin/platform/Input.hpp>
 
-#include <SDL3/SDL.h>
-
 namespace gremlin
 {
-	void Input::HandleEvent(const SDL_Event& event)
+	std::unordered_set<SDL_Keycode> Input::keysDown;
+
+	void Input::Initialize(void)
+	{
+		keysDown.clear();
+	}
+
+	void Input::Shutdown(void)
+	{
+		keysDown.clear();
+	}
+
+	void Input::ProcessEvent(const SDL_Event& event)
 	{
 		if (event.type == SDL_EVENT_KEY_DOWN)
 		{
-			keysDown.insert(event.key.scancode);
+			keysDown.insert(event.key.key);
 		}
 		else if (event.type == SDL_EVENT_KEY_UP)
 		{
-			keysDown.erase(event.key.scancode);
+			keysDown.erase(event.key.key);
 		}
 	}
 
-	void Input::Update(void)
+	bool Input::IsKeyDown(SDL_Keycode key)
 	{
-		// Later: clear per-frame states
-	}
-
-	bool Input::IsKeyDown(int scancode) const
-	{
-		return keysDown.contains(scancode);
+		return keysDown.contains(key);
 	}
 }

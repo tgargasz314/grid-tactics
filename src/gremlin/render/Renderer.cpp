@@ -34,7 +34,7 @@ namespace gremlin
 	};
 
 
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(renderer, 255, 110, 255, 255);
 		SDL_RenderFillRect(renderer, &rect);
 	}
 }

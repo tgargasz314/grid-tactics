@@ -18,6 +18,8 @@ namespace gremlin
 
 		void Run(void);
 
+		void ProcessEvents(void);
+
 	private:
 		void InitializeSDL(void);
 		void ShutdownSDL(void);

@@ -1,5 +1,6 @@
 #include <gremlin/core/Application.hpp>
 #include <gremlin/core/IGame.hpp>
+#include <gremlin/platform/Input.hpp>
 #include <gremlin/render/Renderer.hpp>
 
 #include <SDL3/SDL.h>
@@ -26,7 +27,7 @@ namespace gremlin
 			return;
 		}
 
-		window = SDL_CreateWindow("Gremlin Engine", 800, 600, 0);
+		window = SDL_CreateWindow("Gremlin Engine", 800, 600, SDL_WINDOW_RESIZABLE);
 		if (!window)
 		{
 			std::cerr << "Failed to create SDL window: " << SDL_GetError() << std::endl;
@@ -55,27 +56,63 @@ namespace gremlin
 	{
 		game->Initialize();
 
+		const double fixedTimeStep = 1.0 / 60.0;
+		double accumulator = 0.0;
+
+		uint64_t previous = SDL_GetPerformanceCounter();
+		const uint64_t frequency = SDL_GetPerformanceFrequency();
+
 		while (running)
 		{
-			SDL_Event event;
-			while (SDL_PollEvent(&event))
+			// Time
+			uint64_t current = SDL_GetPerformanceCounter();
+			double deltaTime = static_cast<double>(current - previous) / frequency;
+			previous = current;
+
+			if (deltaTime > 0.1)
 			{
-				if (event.type == SDL_EVENT_QUIT)
-				{
-					running = false;
-				}
+				deltaTime = 0.1;
 			}
 
+			// Events
+			ProcessEvents();
+
+			if (Input::IsKeyDown(SDLK_ESCAPE))
+			{
+				running = false;
+			}
+
+			// Simulation
+			accumulator += deltaTime;
+			while (accumulator >= fixedTimeStep)
+			{
+				game->FixedUpdate(static_cast<float>(fixedTimeStep)); // Needs defined
+				accumulator -= fixedTimeStep;
+			}
+
+			// Frame Update
+			game->Update(static_cast<float>(deltaTime));
+
+			// Render
 			renderer->Clear();
-
-			float deltaTime = 0.016f;
-
-			game->Update(deltaTime);
 			game->Render(*renderer);
-
 			renderer->Present();
 		}
 
 		game->Shutdown();
+	}
+
+	void Application::ProcessEvents(void)
+	{
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_EVENT_QUIT)
+			{
+				running = false;
+			}
+
+			Input::ProcessEvent(event);
+		}
 	}
 }
