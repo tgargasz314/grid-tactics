@@ -5,7 +5,6 @@
 #include <gremlin/render/Renderer.hpp>
 
 #include <SDL3/SDL.h>
-
 #include <iostream>
 
 namespace gremlin
